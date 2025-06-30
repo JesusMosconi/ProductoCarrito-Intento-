@@ -20,9 +20,14 @@ namespace Negocios
             return objDatosCarrito.abmCarrito(accion, objCarrito);
         }
 
-        public DataSet ListadoCarrito(string cual)
+        public DataSet CargarCarrito()
         {
-            return objDatosCarrito.ListadoCarrito(cual);
+            return objDatosCarrito.CargarCarrito();
+        }
+
+        public int VaciarCarrito() 
+        {
+           return objDatosCarrito.VaciarCarrito();
         }
     }
 }

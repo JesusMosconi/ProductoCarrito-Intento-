@@ -11,33 +11,71 @@ namespace Datos
 {
     public class DatosProducto:DatosConexion
     {
-        public int abmProducto(string accion, Producto objProducto)
+        public DataSet CargarProductos() 
         {
-            int resultado = -1;
-            string orden = string.Empty;
-
-            if (accion == "Alta")
-            {
-                orden = "insert into Producto values (" + objProducto.Id + ",'" + objProducto.Nombre +
-                    "','" + objProducto.Descripcion + "'," + objProducto.Precio + "," + objProducto.habilitado + ");";
-            }
-
-            if (accion == "Modificar")
-                orden = "update Producto set Nombre='" + objProducto.Nombre + "', Descripcion='" + objProducto.Descripcion +
-                    "', Precio=" + objProducto.Precio + ", Habilitado='" + objProducto.habilitado +
-                    "' where IdProducto = '" + objProducto.Id + "';";
-            
-            if (accion == "Baja")
-            {
-                orden = "delete from Producto where IdProducto = '" + objProducto.Id + "';";
-            }
-
+            string orden = "SELECT * FROM Producto";
             SqlCommand cmd = new SqlCommand(orden, conexion);
+            DataSet ds = new DataSet();
+            SqlDataAdapter  da = new SqlDataAdapter(cmd);
 
             try
             {
                 AbrirConexion();
-                resultado = cmd.ExecuteNonQuery();
+                da.SelectCommand = cmd;
+                da.Fill(ds);
+            }
+            catch (Exception e)
+            {
+
+                throw new Exception ("Error", e);
+            }
+            finally 
+            { 
+            CerrarConexion();
+                cmd.Dispose();
+            }
+
+            return ds;
+
+        }
+
+
+        public int abmProducto(string accion, Producto objProducto)
+        {
+            int resultado = -1;
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = conexion;
+
+
+            try
+            {
+                AbrirConexion();
+
+                if (accion == "Alta")
+                {
+                    cmd.CommandText = "INSERT INTO Producto (Nombre, Descripcion, Precio, Habilitado) VALUES (@Nombre, @Descripcion, @Precio, @Habilitado)";
+                    cmd.Parameters.AddWithValue("@Nombre", objProducto.Nombre);
+                    cmd.Parameters.AddWithValue("@Descripcion", objProducto.Descripcion);
+                    cmd.Parameters.AddWithValue("@Precio", objProducto.Precio);
+                    cmd.Parameters.AddWithValue("@Habilitado", objProducto.habilitado);
+                    resultado = cmd.ExecuteNonQuery();
+                }
+                else if (accion == "Modificar")
+                {
+                    cmd.CommandText = "UPDATE Producto SET Nombre = @Nombre, Descripcion = @Descripcion, Precio = @Precio, Habilitado = @Habilitado WHERE IdProducto = @IdProducto";
+                    cmd.Parameters.AddWithValue("@Nombre", objProducto.Nombre);
+                    cmd.Parameters.AddWithValue("@Descripcion", objProducto.Descripcion);
+                    cmd.Parameters.AddWithValue("@Precio", objProducto.Precio);
+                    cmd.Parameters.AddWithValue("@Habilitado", objProducto.habilitado);
+                    cmd.Parameters.AddWithValue("@IdProducto", objProducto.Id);
+                    resultado = cmd.ExecuteNonQuery();
+                }
+                else if (accion == "Baja")
+                {
+                    cmd.CommandText = "DELETE FROM Producto WHERE IdProducto = @IdProducto";
+                    cmd.Parameters.AddWithValue("@IdProducto", objProducto.Id);
+                    resultado = cmd.ExecuteNonQuery();
+                }
             }
             catch (Exception e)
             {
@@ -48,42 +86,38 @@ namespace Datos
                 CerrarConexion();
                 cmd.Dispose();
             }
+
+
             return resultado;
         }
 
-        public DataSet ListadoProducto(string cual)
+        public DataSet ObtenerProductoPorId(int idProducto)
         {
-            string orden = string.Empty;
-            if (cual != "Todos")
-            {
-                orden = "select * from Producto where NombreProducto = '" + cual + "';";
-            }
-            else
-            {
-                orden = "select * from Producto;";
-            }
+            string orden = "SELECT * FROM Producto WHERE IdProducto = @IdProducto";
             SqlCommand cmd = new SqlCommand(orden, conexion);
+            cmd.Parameters.AddWithValue("@IdProducto", idProducto);
+
             DataSet ds = new DataSet();
-            SqlDataAdapter da = new SqlDataAdapter();
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+
             try
             {
                 AbrirConexion();
-                cmd.ExecuteNonQuery();
-
-                da.SelectCommand = cmd;
                 da.Fill(ds);
             }
             catch (Exception e)
             {
-                throw new Exception("Error al listar los productos", e);
+                throw new Exception("Error al obtener el producto por Id", e);
             }
             finally
             {
                 CerrarConexion();
                 cmd.Dispose();
             }
+
             return ds;
         }
+
 
     }
 }

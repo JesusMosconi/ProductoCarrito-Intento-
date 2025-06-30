@@ -37,24 +37,22 @@
             this.txtPrecio = new System.Windows.Forms.TextBox();
             this.dgvProducto = new System.Windows.Forms.DataGridView();
             this.btnAgregar = new System.Windows.Forms.Button();
-            this.txtTotal = new System.Windows.Forms.TextBox();
             this.btnModificar = new System.Windows.Forms.Button();
             this.btnEliminar = new System.Windows.Forms.Button();
-            this.txtId = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.btnIrCarrito = new System.Windows.Forms.Button();
+            this.chkProducto = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvProducto)).BeginInit();
             this.SuspendLayout();
             // 
             // lbl1
             // 
             this.lbl1.AutoSize = true;
-            this.lbl1.Location = new System.Drawing.Point(63, 109);
+            this.lbl1.Location = new System.Drawing.Point(63, 100);
             this.lbl1.Name = "lbl1";
             this.lbl1.Size = new System.Drawing.Size(0, 13);
             this.lbl1.TabIndex = 0;
@@ -85,21 +83,21 @@
             // 
             // txtNombre
             // 
-            this.txtNombre.Location = new System.Drawing.Point(67, 126);
+            this.txtNombre.Location = new System.Drawing.Point(67, 117);
             this.txtNombre.Name = "txtNombre";
             this.txtNombre.Size = new System.Drawing.Size(100, 20);
             this.txtNombre.TabIndex = 4;
             // 
             // txtDescripcion
             // 
-            this.txtDescripcion.Location = new System.Drawing.Point(67, 176);
+            this.txtDescripcion.Location = new System.Drawing.Point(67, 167);
             this.txtDescripcion.Name = "txtDescripcion";
             this.txtDescripcion.Size = new System.Drawing.Size(100, 20);
             this.txtDescripcion.TabIndex = 5;
             // 
             // txtPrecio
             // 
-            this.txtPrecio.Location = new System.Drawing.Point(66, 229);
+            this.txtPrecio.Location = new System.Drawing.Point(66, 220);
             this.txtPrecio.Name = "txtPrecio";
             this.txtPrecio.Size = new System.Drawing.Size(100, 20);
             this.txtPrecio.TabIndex = 6;
@@ -109,26 +107,20 @@
             this.dgvProducto.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvProducto.Location = new System.Drawing.Point(238, 124);
             this.dgvProducto.Name = "dgvProducto";
+            this.dgvProducto.ReadOnly = true;
             this.dgvProducto.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvProducto.Size = new System.Drawing.Size(451, 198);
             this.dgvProducto.TabIndex = 8;
             // 
             // btnAgregar
             // 
-            this.btnAgregar.Location = new System.Drawing.Point(76, 327);
+            this.btnAgregar.Location = new System.Drawing.Point(76, 318);
             this.btnAgregar.Name = "btnAgregar";
             this.btnAgregar.Size = new System.Drawing.Size(75, 23);
             this.btnAgregar.TabIndex = 9;
             this.btnAgregar.Text = "Agregar";
             this.btnAgregar.UseVisualStyleBackColor = true;
             this.btnAgregar.Click += new System.EventHandler(this.btnAgregar_Click);
-            // 
-            // txtTotal
-            // 
-            this.txtTotal.Location = new System.Drawing.Point(67, 285);
-            this.txtTotal.Name = "txtTotal";
-            this.txtTotal.Size = new System.Drawing.Size(100, 20);
-            this.txtTotal.TabIndex = 10;
             // 
             // btnModificar
             // 
@@ -148,13 +140,7 @@
             this.btnEliminar.TabIndex = 12;
             this.btnEliminar.Text = "Eiminar";
             this.btnEliminar.UseVisualStyleBackColor = true;
-            // 
-            // txtId
-            // 
-            this.txtId.Location = new System.Drawing.Point(67, 79);
-            this.txtId.Name = "txtId";
-            this.txtId.Size = new System.Drawing.Size(100, 20);
-            this.txtId.TabIndex = 13;
+            this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click_1);
             // 
             // label1
             // 
@@ -166,21 +152,11 @@
             this.label1.TabIndex = 14;
             this.label1.Text = "Agregar Productos";
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Elephant", 8.25F);
-            this.label2.Location = new System.Drawing.Point(105, 62);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(20, 14);
-            this.label2.TabIndex = 15;
-            this.label2.Text = "Id";
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Elephant", 8.25F);
-            this.label3.Location = new System.Drawing.Point(92, 109);
+            this.label3.Location = new System.Drawing.Point(92, 100);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(52, 14);
             this.label3.TabIndex = 16;
@@ -190,7 +166,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Elephant", 8.25F);
-            this.label4.Location = new System.Drawing.Point(83, 159);
+            this.label4.Location = new System.Drawing.Point(83, 150);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(74, 14);
             this.label4.TabIndex = 17;
@@ -200,7 +176,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Elephant", 8.25F);
-            this.label5.Location = new System.Drawing.Point(92, 212);
+            this.label5.Location = new System.Drawing.Point(92, 203);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(44, 14);
             this.label5.TabIndex = 18;
@@ -210,11 +186,11 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Elephant", 8.25F);
-            this.label6.Location = new System.Drawing.Point(39, 268);
+            this.label6.Location = new System.Drawing.Point(85, 259);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(151, 14);
+            this.label6.Size = new System.Drawing.Size(66, 14);
             this.label6.TabIndex = 19;
-            this.label6.Text = "Habilitado (1= Si, 0= No)";
+            this.label6.Text = "Habilitado";
             // 
             // btnIrCarrito
             // 
@@ -226,22 +202,29 @@
             this.btnIrCarrito.UseVisualStyleBackColor = true;
             this.btnIrCarrito.Click += new System.EventHandler(this.btnIrCarrito_Click);
             // 
+            // chkProducto
+            // 
+            this.chkProducto.AutoSize = true;
+            this.chkProducto.Location = new System.Drawing.Point(106, 287);
+            this.chkProducto.Name = "chkProducto";
+            this.chkProducto.Size = new System.Drawing.Size(15, 14);
+            this.chkProducto.TabIndex = 22;
+            this.chkProducto.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.chkProducto);
             this.Controls.Add(this.btnIrCarrito);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.txtId);
             this.Controls.Add(this.btnEliminar);
             this.Controls.Add(this.btnModificar);
-            this.Controls.Add(this.txtTotal);
             this.Controls.Add(this.btnAgregar);
             this.Controls.Add(this.dgvProducto);
             this.Controls.Add(this.txtPrecio);
@@ -271,17 +254,15 @@
         private System.Windows.Forms.TextBox txtPrecio;
         private System.Windows.Forms.DataGridView dgvProducto;
         private System.Windows.Forms.Button btnAgregar;
-        private System.Windows.Forms.TextBox txtTotal;
         private System.Windows.Forms.Button btnModificar;
         private System.Windows.Forms.Button btnEliminar;
-        private System.Windows.Forms.TextBox txtId;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button btnIrCarrito;
+        private System.Windows.Forms.CheckBox chkProducto;
     }
 }
 

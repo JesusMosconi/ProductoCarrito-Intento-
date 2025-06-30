@@ -12,8 +12,8 @@ namespace Entidades
         private int IdProducto;
         private string NombreProducto;
         private string DescripcionProducto;
-        private int PrecioProducto;
-        private string Habilitado;
+        private string PrecioProducto;
+        private bool Habilitado;
 
         #endregion
 
@@ -24,8 +24,8 @@ namespace Entidades
             IdProducto = 0;
             NombreProducto = string.Empty;
             DescripcionProducto = string.Empty;
-            PrecioProducto = 0;
-            Habilitado = string.Empty;
+            PrecioProducto = string.Empty;
+            Habilitado = false;
         }
         #endregion
 
@@ -46,13 +46,13 @@ namespace Entidades
             get { return DescripcionProducto; }
             set { DescripcionProducto = value; }
         }
-        public int Precio
+        public string Precio
         {
             get { return PrecioProducto; }
             set { PrecioProducto = value; }
         }
 
-        public string habilitado
+        public bool habilitado
             {
             get { return Habilitado; }
             set { Habilitado = value; }

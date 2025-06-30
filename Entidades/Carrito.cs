@@ -9,10 +9,10 @@ namespace Entidades
     public class Carrito
     {
         #region atributos
-        private string NombreProducto;
-        private int PrecioProducto;
+        private int IdCarrito;
+        public Producto Producto { get; set; }
         private int CantidadProducto;
-        private int TotalProducto;
+
 
         #endregion
 
@@ -20,34 +20,28 @@ namespace Entidades
         #region Constructores
         public Carrito() 
         { 
-            NombreProducto = string.Empty;
-            PrecioProducto = 0;
+            IdCarrito = 0;
             CantidadProducto = 0;
-            TotalProducto = 0;
         }
         #endregion
 
         #region Propiedades
-        public string Nombre
+
+        public int Id
         {
-            get { return NombreProducto; }
-            set { NombreProducto = value; }
+            get { return IdCarrito; }
+            set { IdCarrito = value; }
         }
 
-        public int Precio
-        {
-            get { return PrecioProducto; }
-            set { PrecioProducto = value; }
-        }
+
         public int Cantidad
         {
             get { return CantidadProducto; }
             set { CantidadProducto = value; }
         }
-        public int Total
+        public decimal Total
         {
-            get { return TotalProducto; }
-            set { TotalProducto = value; }
+            get { return Convert.ToInt32(Producto.Precio) * Cantidad; }
         }
         #endregion
     }

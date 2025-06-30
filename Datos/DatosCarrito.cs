@@ -11,35 +11,93 @@ namespace Datos
 {
     public class DatosCarrito : DatosConexion
     {
-        public int abmCarrito(string accion, Carrito objCarrito) 
+
+        public DataSet CargarCarrito()
         {
-            int resultado = -1;
-            string orden = string.Empty;
-
-            if (accion == "Alta")
-            {
-                orden = "insert into Carrito values ('"  + objCarrito.Nombre +
-"'," + objCarrito.Precio + "," + objCarrito.Cantidad  + "," + objCarrito.Total + ");";
-            }
-
-            if (accion == "Modificar") 
-            {
-                orden = "update Carrito set CantidadProducto = '" + objCarrito.Cantidad +
-                    ", TotalProducto = " + objCarrito.Total +
-                    " where NombreProducto = '" + objCarrito.Nombre + "';";
-            }
-
-            if (accion == "Baja")
-            {
-                orden = "delete from Carrito where NombreProducto = '" + objCarrito.Nombre + "';";
-            }
+            string orden = @"
+                SELECT 
+                    c.IdCarrito,
+                    p.Nombre,
+                    p.Descripcion,
+                    p.Precio,
+                    c.Cantidad,
+                    (p.Precio * c.Cantidad) AS Total
+                FROM 
+                    Carrito c
+                INNER JOIN 
+                    Producto p ON c.IdProducto = p.IdProducto";
 
             SqlCommand cmd = new SqlCommand(orden, conexion);
+            DataSet ds = new DataSet();
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
 
             try
             {
                 AbrirConexion();
-                resultado = cmd.ExecuteNonQuery();
+                da.Fill(ds);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error al cargar el carrito", e);
+            }
+            finally
+            {
+                CerrarConexion();
+                cmd.Dispose();
+            }
+
+            return ds;
+        }
+
+        public int abmCarrito(string accion, Carrito objCarrito) 
+        {
+           int resultado = -1;
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = conexion;
+            try
+            {
+                AbrirConexion();
+                if (accion == "Alta")
+                {
+                    cmd.CommandText = @"
+                        SELECT Cantidad
+                        FROM Carrito 
+                        WHERE IdProducto = @IdProducto";
+
+                    cmd.Parameters.AddWithValue("@IdProducto", objCarrito.Id);
+
+                    object cantidadExistente = cmd.ExecuteScalar();
+                    cmd.Parameters.Clear();
+
+                    if (cantidadExistente != null)
+                    {
+                        // Si existe, actualizar cantidad acumulada
+                        cmd.CommandText = @"
+                            UPDATE Carrito
+                            SET Cantidad = Cantidad + @Cantidad
+                            WHERE IdProducto = @IdProducto";
+                    }
+                    else
+                    {
+                        // Si no existe, insertar nuevo registro
+                        cmd.CommandText = @"
+                            INSERT INTO Carrito (IdProducto, Cantidad)
+                            VALUES (@IdProducto, @Cantidad)";
+                    }
+
+                    cmd.Parameters.AddWithValue("@IdProducto", objCarrito.Id);
+                    cmd.Parameters.AddWithValue("@Cantidad", objCarrito.Cantidad);
+
+                    resultado = cmd.ExecuteNonQuery();
+                }
+                else if (accion == "Baja")
+                {
+                    cmd.CommandText = "DELETE FROM Carrito WHERE IdCarrito = @IdCarrito";
+                    cmd.Parameters.AddWithValue("@IdCarrito", objCarrito.Id);
+                    resultado = cmd.ExecuteNonQuery();
+                }
+            
+                
             }
             catch (Exception e)
             {
@@ -54,40 +112,32 @@ namespace Datos
         }
 
 
-        public DataSet ListadoCarrito(string cual) 
-        { 
-            string orden = string.Empty;
-            if (cual != "Todos")
-            {
-                orden = "select * from Carrito where NombreProducto = '" + cual + "';";
-            }
-            else
-            {
-                orden = "select * from Carrito;";
-            }
-            SqlCommand cmd = new SqlCommand(orden, conexion);
-            DataSet ds = new DataSet();
-            SqlDataAdapter da = new SqlDataAdapter();
+        public int VaciarCarrito()         
+        {
+            int resultado = -1;
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = conexion;
 
             try
             {
                 AbrirConexion();
-                cmd.ExecuteNonQuery();
-
-                da.SelectCommand = cmd;
-                da.Fill(ds);
+                cmd.CommandText = "Delete from Carrito";
+                resultado = cmd.ExecuteNonQuery();
             }
             catch (Exception e)
             {
 
-                throw new Exception("Error al Listar Carrito", e);
+                throw new Exception("ERROR", e);
             }
-            finally
+            finally 
             {
                 CerrarConexion();
                 cmd.Dispose();
+            
             }
-            return ds;
+
+            return resultado;
         }
+
     }
 }

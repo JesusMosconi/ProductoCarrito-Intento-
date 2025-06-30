@@ -16,12 +16,18 @@ namespace Negocios
         {
             return datosProducto.abmProducto(accion, objProducto);
         }
-        public DataSet ListadoProducto(string cual)
+
+
+        public DataSet CargarProductos()
         {
-            return datosProducto.ListadoProducto(cual);
+            return datosProducto.CargarProductos();
 
         }
 
+        public DataSet ObtenerProductoPorId(int idProducto)
+        {
+            return datosProducto.ObtenerProductoPorId(idProducto);
+        }
     }
 }
 
